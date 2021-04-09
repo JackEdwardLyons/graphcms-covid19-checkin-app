@@ -1,17 +1,31 @@
 import React from 'react';
-import { PageProps } from 'gatsby';
+import { graphql, PageProps, useStaticQuery } from 'gatsby';
 
-import Title from '@/components/Title';
+const pageQuery = graphql`
+  {
+    allGraphCmsDemo {
+      nodes {
+        demoText
+      }
+    }
+  }
+`;
 
-const Home: React.FC<PageProps> = () => (
-  <main>
-    <Title />
-    <p>A TypeScript starter for Gatsby. Great for advanced users.</p>
-    <p>
-      Follow me on Twitter (
-      <a href="https://twitter.com/jpedroschmitz">@jpedroschmitz</a>)
-    </p>
-  </main>
-);
+const Home: React.FC<PageProps> = () => {
+  const { allGraphCmsDemo } = useStaticQuery(pageQuery);
+
+  console.log({ allGraphCmsDemo });
+
+  return (
+    <main>
+      <h2>This is data from graphcms</h2>
+      <pre>
+        {allGraphCmsDemo.nodes.map(({ demoText }) => (
+          <p key={demoText}>{demoText}</p>
+        ))}
+      </pre>
+    </main>
+  );
+};
 
 export default Home;
